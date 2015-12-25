@@ -15,21 +15,26 @@ else()
         add_definitions("-Wall -Wextra")
 endif ()
 
+set(pugixml_sources
+        deps/pugixml-1.7/src/pugixml.cpp)
+
 set(sources
 	src/AnimatedSprite.cpp
 	src/Font.cpp
         src/SpriteSheet.cpp
+        src/SpriteSheetLoader.cpp
 )
 
 add_library(
     CEngine
-    ${sources}
+    ${pugixml_sources} ${sources}
 )
 
 include_directories(./src)
 include_directories(./include)
 include_directories(./include/CEngine)
 include_directories(./deps/NEngine/include) # TODO : should it be done here ?
+include_directories(./deps/pugixml-1.7/include)
 
 target_link_libraries (CEngine NEngine)
 
