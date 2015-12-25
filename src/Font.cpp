@@ -27,7 +27,7 @@ e-mail: lw.demoscene@gmail.com
 #include <string>
 #include <cassert>
 
-#include "NEngine/Sprite.h"
+#include "NEngine/Image.h"
 #include "NEngine/Renderer.h"
 
 #include "NEngine/Types/Size2.h"
@@ -35,10 +35,10 @@ e-mail: lw.demoscene@gmail.com
 
 #include "NEngine/Exceptions/ConstructionFailedException.h"
 
-CE::Font::Font(const NE::Sprite* pSprite, const USize2& letterSize, const unsigned char startingLetter)
-    :pSprite(pSprite),letterSize(letterSize),startingLetter(startingLetter)
+CE::Font::Font(const NE::Image* pImage, const USize2& letterSize, const unsigned char startingLetter)
+    :pImage(pImage),letterSize(letterSize),startingLetter(startingLetter)
 {
-    assert(pSprite);
+    assert(pImage);
 }
 
 CE::Font::~Font(void)
@@ -59,7 +59,7 @@ bool CE::Font::draw(const NE::Renderer& r, const std::string& text, const IVec2&
 {
     bool noError = true;
     Rect rectLetter(IVec2(0,0),letterSize);
-    unsigned int numberLetterWidth = pSprite->getSize().width / letterSize.width;
+    unsigned int numberLetterWidth = pImage->getSize().width / letterSize.width;
     IVec2 drawPosition(position);
 
     for ( unsigned int i = 0 ; i < text.size() && noError ; i++ )
@@ -70,7 +70,7 @@ bool CE::Font::draw(const NE::Renderer& r, const std::string& text, const IVec2&
 
         rectLetter.position = IVec2(col * letterSize.width , line * letterSize.height);
 
-        noError &= r.drawSurface(drawPosition,pSprite,rectLetter);
+        noError &= r.drawSurface(drawPosition,pImage,rectLetter);
 
         drawPosition.x += letterSize.width/2;
     }

@@ -25,14 +25,14 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include <string>
+#include <vector>
+#include <utility>
 
 #include "NEngine/Types/Vec2.h"
 #include "NEngine/Types/Size2.h"
 #include "NEngine/Types/Rect.h"
 
 namespace NE { class Renderer; }
-namespace NE { class SpriteLoader; }
 namespace NE { class Sprite; }
 
 struct Colour;
@@ -41,17 +41,13 @@ namespace CE
 {
     class AnimatedSprite
     {
-    private:
+        typedef std::pair<const NE::Sprite*, unsigned int> TimedSprite;
 
-        const NE::Sprite* pSprite;
-        USize2 spriteSize;
+    private:        
+        std::vector<TimedSprite> sprites;
 
-        unsigned int numberAnimation;           /*!< number of animation in the sprite */
         unsigned int animationCounter;          /*!< number of the current animation */
-
         unsigned int lastUpdate;                /*!< last time that the animated sprite has been updated */
-
-        unsigned int msInterval;                /*!< interval between two sprites of the animation */
 
         // Disallow the copy
         AnimatedSprite(const AnimatedSprite& as);
@@ -60,17 +56,13 @@ namespace CE
         void update(const unsigned int time);
 
     public:
-        AnimatedSprite(const NE::Sprite* pSprite, const USize2& spriteSize, const unsigned int msInterval);
-        AnimatedSprite(NE::SpriteLoader* pSL, const std::string& fileName, const USize2& spriteSize, const unsigned int msInterval);
-
+        AnimatedSprite()
+            :animationCounter(0),lastUpdate(0) {}
         ~AnimatedSprite(void);
 
-        Rect getSrcRect(const unsigned int time);
+        void addSprite(const NE::Sprite* pSprite, unsigned int timeToDisplay);
 
-        USize2 getSize(void)const { return spriteSize; }
-
-        unsigned int getInterval(void)const { return msInterval; }
-        void setInterval(const unsigned int newInterval) { msInterval = newInterval; }
+        unsigned int nbSprites()const { return sprites.size(); }
 
         bool draw(const NE::Renderer& r, const IVec2& position, const unsigned int time=0);
         bool draw(const NE::Renderer& r, const IVec2& position, const Colour& mask, const unsigned int time=0);
@@ -81,13 +73,6 @@ namespace CE
  *  \brief Animated sprite management class
  *
  * Handle the case of set of sprites for animation
- * Can do the following:
- *      - Load from file (directly in the constructor)
- *      - Get the width
- *      - Get the height
- *      - Get the rectangle to use to draw the correct animation
- *      - Get interval between two sprites of the animation, in milliseconds
- *      - Set interval between two sprites of the animation, in milliseconds
  */
 
 /*! \fn void CE::AnimatedSprite::update(const unsigned int time)
@@ -102,36 +87,13 @@ namespace CE
  * \param msInterval interval between two sprite in milliseconds
  */
 
-/*! \fn CE::AnimatedSprite::AnimatedSprite(NE::SpriteLoader* pSL, const std::string& fileName, const USize2& spriteSize, const unsigned int msInterval)
- *  \brief Create an animation from a file
- *  \param pSL pointer to the SpriteLoader to use
- *  \param fileName the file to load as an AnimatedSprite
- *  \param spriteSize the size of each sprite
- *  \param msInterval the time between two sprites
- */
-
 /*! \fn CE::AnimatedSprite::~AnimatedSprite(void)
  */
 
-/*! \fn Rect CE::AnimatedSprite::getSrcRect(const unsigned int time)
- * \brief Get the source rectangle for the internal surface, to draw
- * Following the current frame, the rectangle to draw will be returned
- * \param time the actual time
- */
-
-/*! \fn USize2 CE::AnimatedSprite::getSize(void)const
- * \brief Get the size of the animated sprite
- * \return returns the size of the animated sprite
- */
-
-/*! \fn unsigned int CE::AnimatedSprite::getInterval(void)const
- * \brief Get the interval between two frames
- * \return returns the interval in millisecond
- */
-
-/*! \fn void CE::AnimatedSprite::setInterval(const unsigned int newInterval)
- * \brief Set the interval between two frames
- * \param newInterval the new interval in millisecond
+/*! \fn void CE::AnimatedSprite::addSprite(const NE::Sprite* pSprite, unsigned int timeToDisplay)
+ * Add a sprite to the animation
+ * \param pSprite the sprite to add
+ * \param timeToDisplay the time this sprite should stay on screen
  */
 
 /*! \fn bool CE::AnimatedSprite::draw(const NE::Renderer& r, const IVec2& position, const unsigned int time=0)

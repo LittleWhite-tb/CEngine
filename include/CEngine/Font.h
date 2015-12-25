@@ -32,7 +32,7 @@ e-mail: lw.demoscene@gmail.com
 #include "NEngine/Types/Colour.h"
 
 namespace NE { class Renderer; }
-namespace NE { class Sprite; }
+namespace NE { class Image; }
 
 namespace CE
 {
@@ -40,7 +40,7 @@ namespace CE
     {
     private:
 
-        const NE::Sprite* pSprite;
+        const NE::Image* pImage;
 
         USize2 letterSize;
         unsigned char startingLetter;
@@ -50,7 +50,7 @@ namespace CE
         void operator= (const Font& s);
 
     public:
-        Font(const NE::Sprite* pSprite, const USize2& letterSize, const unsigned char startingLetter);
+        Font(const NE::Image* pImage, const USize2& letterSize, const unsigned char startingLetter);
         ~Font(void);
 
         USize2 getLetterSize(void) { return letterSize; }
@@ -65,8 +65,8 @@ namespace CE
  *
  */
 
-/*! \fn CE::Font::Font(const NE::Sprite* pSprite, const USize2& letterSize, const unsigned char startingLetter)
- * \param pSprite the Sprite to use as source
+/*! \fn CE::Font::Font(const NE::Image* pImage, const USize2& letterSize, const unsigned char startingLetter)
+ * \param pSprite the Image to use as source
  * \param letterSize the size of one letter
  * \param startingLetter the letter with which one the bitmap is starting
  */

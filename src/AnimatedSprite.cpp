@@ -27,38 +27,10 @@ e-mail: lw.demoscene@gmail.com
 #include <cassert>
 
 #include "NEngine/NEngine.h"
-#include "NEngine/Renderer.h"
-#include "NEngine/SpriteLoader.h"
 #include "NEngine/Sprite.h"
 
 #include "NEngine/Types/Colour.h"
 #include "NEngine/Types/Rect.h"
-
-CE::AnimatedSprite::AnimatedSprite(const NE::Sprite* pSprite, const USize2& spriteSize, const unsigned int msInterval)
-    :pSprite(pSprite),animationCounter(0),lastUpdate(0),msInterval(msInterval)
-{
-    USize2 surfaceSize = pSprite->getSize();
-    this->spriteSize = spriteSize;
-
-    numberAnimation = (surfaceSize.width / spriteSize.width) * (surfaceSize.height / spriteSize.height );
-
-    NEDebug << "AnimatedSprite " << spriteSize << " Nb Animation: " << numberAnimation << "\n";
-}
-
-CE::AnimatedSprite::AnimatedSprite(NE::SpriteLoader* pSL, const std::string& fileName, const USize2& spriteSize, const unsigned int msInterval)
-    :animationCounter(0),lastUpdate(0),msInterval(msInterval)
-{
-    assert(pSL);
-
-    this->pSprite = pSL->loadSpriteFromFile(fileName);
-    this->spriteSize = spriteSize;
-
-    USize2 surfaceSize = pSprite->getSize();
-
-    numberAnimation = (surfaceSize.width / spriteSize.width) * (surfaceSize.height / spriteSize.height );
-
-    NEDebug << "AnimatedSprite '" << fileName << "' Nb Animation: " << numberAnimation << "\n";
-}
 
 CE::AnimatedSprite::~AnimatedSprite(void)
 {
@@ -69,11 +41,11 @@ void CE::AnimatedSprite::update(const unsigned int time)
 {
     // LDebug << "AnimatedSprite :: update (" << time << ")";
 
-    if ( time - lastUpdate > msInterval )
+    if ( time - lastUpdate > sprites[animationCounter].second )
     {
         animationCounter++;
 
-        if ( animationCounter >= numberAnimation )
+        if ( animationCounter >= nbSprites() )
         {
             animationCounter=0;
         }
@@ -82,32 +54,26 @@ void CE::AnimatedSprite::update(const unsigned int time)
     }
 }
 
-Rect CE::AnimatedSprite::getSrcRect(const unsigned int time)
+void CE::AnimatedSprite::addSprite(const NE::Sprite* pSprite, unsigned int timeToDisplay)
 {
-    unsigned int nbAnimOnWidth = this->pSprite->getSize().width / spriteSize.width;
-
-    IVec2 position( spriteSize.width * (animationCounter % nbAnimOnWidth),
-                    spriteSize.height * (animationCounter / nbAnimOnWidth));
-
-    Rect srcRect(position,spriteSize);
-
-    //NEDebug << "AnimatedSprite :: getSrcRect (" << srcRect.x << ";" << srcRect.y << ";" << srcRect.w << ";" << srcRect.h << ")";
-
-    this->update(time);
-
-    return srcRect;
+    assert(pSprite);
+    sprites.push_back(TimedSprite(pSprite,timeToDisplay));
 }
 
 bool CE::AnimatedSprite::draw(const NE::Renderer& r, const IVec2& position, const unsigned int time)
 {
-    Rect srcRect = this->getSrcRect(time);
+    if (sprites.empty() )
+        return true;
 
-    return r.drawSurface(position,pSprite,srcRect);
+    this->update(time);
+    return sprites[animationCounter].first->draw(r,position);
 }
 
 bool CE::AnimatedSprite::draw(const NE::Renderer& r, const IVec2& position, const Colour& mask, const unsigned int time)
 {
-    Rect srcRect = this->getSrcRect(time);
+    if (sprites.empty() )
+        return true;
 
-    return r.drawSurface(position,pSprite,srcRect,mask);
+    this->update(time);
+    return sprites[animationCounter].first->draw(r,position,mask);
 }
