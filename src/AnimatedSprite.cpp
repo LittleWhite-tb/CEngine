@@ -54,9 +54,8 @@ void CE::AnimatedSprite::update(const unsigned int time)
     }
 }
 
-void CE::AnimatedSprite::addSprite(const NE::Sprite* pSprite, unsigned int timeToDisplay)
+void CE::AnimatedSprite::addSprite(const NE::Sprite& pSprite, unsigned int timeToDisplay)
 {
-    assert(pSprite);
     sprites.push_back(TimedSprite(pSprite,timeToDisplay));
 }
 
@@ -66,7 +65,7 @@ bool CE::AnimatedSprite::draw(const NE::Renderer& r, const IVec2& position, cons
         return true;
 
     this->update(time);
-    return sprites[animationCounter].first->draw(r,position);
+    return sprites[animationCounter].first.draw(r,position);
 }
 
 bool CE::AnimatedSprite::draw(const NE::Renderer& r, const IVec2& position, const Colour& mask, const unsigned int time)
@@ -75,5 +74,5 @@ bool CE::AnimatedSprite::draw(const NE::Renderer& r, const IVec2& position, cons
         return true;
 
     this->update(time);
-    return sprites[animationCounter].first->draw(r,position,mask);
+    return sprites[animationCounter].first.draw(r,position,mask);
 }

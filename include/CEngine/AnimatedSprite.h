@@ -41,7 +41,7 @@ namespace CE
 {
     class AnimatedSprite
     {
-        typedef std::pair<const NE::Sprite*, unsigned int> TimedSprite;
+        typedef std::pair<NE::Sprite, unsigned int> TimedSprite;
 
     private:        
         std::vector<TimedSprite> sprites;
@@ -60,7 +60,7 @@ namespace CE
             :animationCounter(0),lastUpdate(0) {}
         ~AnimatedSprite(void);
 
-        void addSprite(const NE::Sprite* pSprite, unsigned int timeToDisplay);
+        void addSprite(const NE::Sprite& pSprite, unsigned int timeToDisplay);
 
         unsigned int nbSprites()const { return sprites.size(); }
 
@@ -90,7 +90,7 @@ namespace CE
 /*! \fn CE::AnimatedSprite::~AnimatedSprite(void)
  */
 
-/*! \fn void CE::AnimatedSprite::addSprite(const NE::Sprite* pSprite, unsigned int timeToDisplay)
+/*! \fn void CE::AnimatedSprite::addSprite(const NE::Sprite& pSprite, unsigned int timeToDisplay)
  * Add a sprite to the animation
  * \param pSprite the sprite to add
  * \param timeToDisplay the time this sprite should stay on screen

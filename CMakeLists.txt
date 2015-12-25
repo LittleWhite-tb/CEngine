@@ -18,6 +18,7 @@ endif ()
 set(sources
 	src/AnimatedSprite.cpp
 	src/Font.cpp
+        src/SpriteSheet.cpp
 )
 
 add_library(
