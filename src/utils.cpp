@@ -1,6 +1,3 @@
-#ifndef __SPRITESHEET_H__
-#define __SPRITESHEET_H__
-
 #ifndef DOXYGEN_IGNORE_TAG
 /**
 CEngine gives tools to easily build 2D games
@@ -25,27 +22,17 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include "NEngine/Sprite.h"
+#include "utils.h"
 
-namespace NE { class Image; }
-
-namespace CE
+std::string CE::Utils::dirname(const std::string& path)
 {
-    class SpriteSheet
+    size_t pos = path.find_last_of("\\/");
+    if (std::string::npos == pos)
     {
-    private:
-        const NE::Image* pImage;
-        std::map<std::string, NE::Sprite> sprites;
-
-        bool exists(const std::string& spriteName)const;
-    public:
-        SpriteSheet(const NE::Image* pImage)
-            :pImage(pImage) {}
-
-        void addSprite(const std::string& spriteName, const IVec2& origine, const USize2& size);
-
-        const NE::Sprite& getSprite(const std::string& spriteName)const;
-    };
+        return "";
+    }
+    else
+    {
+        return path.substr(0,pos+1); // +1 to keep the directory separator
+    }
 }
-
-#endif

@@ -26,7 +26,7 @@ e-mail: lw.demoscene@gmail.com
 
 #include "NEngine/Exceptions/ItemNotFoundException.h"
 
-bool CE::SpriteSheet::exists(const std::string& spriteName)
+bool CE::SpriteSheet::exists(const std::string& spriteName) const
 {
     if ( sprites.find(spriteName) != sprites.end() )
     {
@@ -47,11 +47,12 @@ void CE::SpriteSheet::addSprite(const std::string& spriteName, const IVec2& orig
     sprites[spriteName] = NE::Sprite(this->pImage,origine,size);
 }
 
-const NE::Sprite& CE::SpriteSheet::getSprite(const std::string& spriteName)
+const NE::Sprite& CE::SpriteSheet::getSprite(const std::string& spriteName) const
 {
-    if (this->exists(spriteName))
+    std::map<std::string, NE::Sprite>::const_iterator item = sprites.find(spriteName);
+    if (item != sprites.end())
     {
-        return sprites[spriteName];
+        return item->second;
     }
     throw ItemNotFoundException(spriteName);
 }

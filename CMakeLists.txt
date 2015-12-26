@@ -3,7 +3,7 @@ cmake_policy(SET CMP0015 NEW)
 
 project(CEngine)
 
-if (NOT EXISTS "./deps/NEngine/CMakeLists.txt")
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/deps/NEngine/CMakeLists.txt")
     message(FATAL_ERROR "Did you run 'git submodule update --init --recursive' ?")
 endif()
 add_subdirectory("./deps/NEngine")
@@ -15,25 +15,24 @@ else()
         add_definitions("-Wall -Wextra")
 endif ()
 
-set(pugixml_sources
-        deps/pugixml-1.7/src/pugixml.cpp)
-
 set(sources
 	src/AnimatedSprite.cpp
 	src/Font.cpp
         src/SpriteSheet.cpp
         src/SpriteSheetLoader.cpp
+
+        src/utils.cpp
 )
 
 add_library(
     CEngine
-    ${pugixml_sources} ${sources}
+    ${sources}
 )
 
 include_directories(./src)
-include_directories(./include)
+target_include_directories(CEngine PUBLIC ./include)
 include_directories(./include/CEngine)
-include_directories(./deps/NEngine/include) # TODO : should it be done here ?
+target_include_directories(CEngine PUBLIC ./deps/NEngine/include) # TODO : should it be done here ?
 include_directories(./deps/pugixml-1.7/include)
 
 target_link_libraries (CEngine NEngine)

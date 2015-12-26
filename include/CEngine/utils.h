@@ -1,5 +1,5 @@
-#ifndef __SPRITESHEET_H__
-#define __SPRITESHEET_H__
+#ifndef UTILS_H__
+#define UTILS_H__
 
 #ifndef DOXYGEN_IGNORE_TAG
 /**
@@ -25,26 +25,14 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include "NEngine/Sprite.h"
-
-namespace NE { class Image; }
+#include <string>
 
 namespace CE
 {
-    class SpriteSheet
+    class Utils
     {
-    private:
-        const NE::Image* pImage;
-        std::map<std::string, NE::Sprite> sprites;
-
-        bool exists(const std::string& spriteName)const;
     public:
-        SpriteSheet(const NE::Image* pImage)
-            :pImage(pImage) {}
-
-        void addSprite(const std::string& spriteName, const IVec2& origine, const USize2& size);
-
-        const NE::Sprite& getSprite(const std::string& spriteName)const;
+        static std::string dirname(const std::string& path);
     };
 }
 
