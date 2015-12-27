@@ -22,7 +22,7 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include "SpriteSheet.h"
+#include "CEngine/SpriteSheet.h"
 
 #include "NEngine/Exceptions/ItemNotFoundException.h"
 

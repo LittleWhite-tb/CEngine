@@ -22,7 +22,7 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include "Font.h"
+#include "CEngine/Font.h"
 
 #include <string>
 #include <cassert>

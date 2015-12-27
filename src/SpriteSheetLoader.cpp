@@ -22,18 +22,18 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include "SpriteSheetLoader.h"
+#include "CEngine/SpriteSheetLoader.h"
 
 #include "NEngine/Exceptions/FileNotFoundException.h"
 
 #include "NEngine/ImageLoader.h"
 #include "NEngine/Image.h"
 
-#include "SpriteSheet.h"
+#include "CEngine/SpriteSheet.h"
 
 #include "pugixml.hpp"
 
-#include "utils.h"
+#include "CEngine/utils.h"
 
 const CE::SpriteSheet* CE::SpriteSheetLoader::loadFromFile(const std::string& filename, NE::ImageLoader* pIL)
 {

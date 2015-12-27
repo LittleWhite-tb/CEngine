@@ -22,7 +22,7 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include "utils.h"
+#include "CEngine/utils.h"
 
 std::string CE::Utils::dirname(const std::string& path)
 {

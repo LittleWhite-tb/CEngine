@@ -22,7 +22,7 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include "AnimatedSprite.h"
+#include "CEngine/AnimatedSprite.h"
 
 #include <cassert>
 

@@ -29,11 +29,9 @@ add_library(
     ${sources}
 )
 
-include_directories(./src)
-target_include_directories(CEngine PUBLIC ./include)
-include_directories(./include/CEngine)
-target_include_directories(CEngine PUBLIC ./deps/NEngine/include) # TODO : should it be done here ?
 include_directories(./deps/pugixml-1.7/include)
+
+target_include_directories(CEngine PUBLIC ./include)
 
 target_link_libraries (CEngine NEngine)
 
