@@ -45,6 +45,10 @@ namespace CE
         void addSprite(const std::string& spriteName, const IVec2& origine, const USize2& size);
 
         const NE::Sprite& getSprite(const std::string& spriteName)const;
+
+#ifndef NDEBUG
+        void listSprites()const;
+#endif
     };
 }
 

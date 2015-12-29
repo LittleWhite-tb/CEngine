@@ -56,3 +56,16 @@ const NE::Sprite& CE::SpriteSheet::getSprite(const std::string& spriteName) cons
     }
     throw ItemNotFoundException(spriteName);
 }
+
+#ifndef NDEBUG
+void CE::SpriteSheet::listSprites()const
+{
+    NEDebug << "List of sprites : \n";
+
+    std::map<std::string, NE::Sprite>::const_iterator item = sprites.begin();
+    for ( ; item != sprites.end() ; ++item)
+    {
+        NEDebug << item->first << "\n";
+    }
+}
+#endif

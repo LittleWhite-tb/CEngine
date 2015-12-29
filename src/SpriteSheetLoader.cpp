@@ -30,10 +30,51 @@ e-mail: lw.demoscene@gmail.com
 #include "NEngine/Image.h"
 
 #include "CEngine/SpriteSheet.h"
+#include "CEngine/utils.h"
 
 #include "pugixml.hpp"
+#include <cassert>
 
-#include "CEngine/utils.h"
+inline void addTrailingSlash(std::string& s)
+{
+    if ( s.size() != 0 )
+        if ( s[s.size()-1] != '/')
+            s += "/";
+}
+
+void addSprite(const pugi::xml_node& spriteNode, CE::SpriteSheet* pSpriteSheet, const std::string& path)
+{
+    assert(pSpriteSheet);
+
+    pugi::xml_attribute name = spriteNode.attribute("name");
+    pugi::xml_attribute x = spriteNode.attribute("x");
+    pugi::xml_attribute y = spriteNode.attribute("y");
+    pugi::xml_attribute w = spriteNode.attribute("w");
+    pugi::xml_attribute h = spriteNode.attribute("h");
+    if (name && x && y && w && h)
+    {
+        std::string fixedPath = path;
+        addTrailingSlash(fixedPath);
+        pSpriteSheet->addSprite(fixedPath + name.value(),IVec2(x.as_int(),y.as_int()),USize2(w.as_int(),h.as_int()));
+    }
+}
+
+void parseDir(const pugi::xml_node& dirNode, CE::SpriteSheet* pSpriteSheet, const std::string& parentPath)
+{
+    // Check for inner dir
+    for (pugi::xml_node innerDirNode = dirNode.child("dir") ; innerDirNode ; innerDirNode = innerDirNode.next_sibling("dir"))
+    {
+        std::string path = parentPath;
+        addTrailingSlash(path);
+        parseDir(innerDirNode,pSpriteSheet,path + innerDirNode.attribute("name").value());
+    }
+
+    // Parse all sprite in directory
+    for (pugi::xml_node spriteNode = dirNode.child("spr") ; spriteNode ; spriteNode = spriteNode.next_sibling("spr"))
+    {
+        addSprite(spriteNode,pSpriteSheet,parentPath);
+    }
+}
 
 const CE::SpriteSheet* CE::SpriteSheetLoader::loadFromFile(const std::string& filename, NE::ImageLoader* pIL)
 {
@@ -58,19 +99,7 @@ const CE::SpriteSheet* CE::SpriteSheetLoader::loadFromFile(const std::string& fi
                     {
                         for (pugi::xml_node dirNode = definitionsNode.child("dir") ; dirNode ; dirNode = dirNode.next_sibling("dir"))
                         {
-                            // Parse all sprite in directory
-                            for (pugi::xml_node spriteNode = dirNode.child("spr") ; spriteNode ; spriteNode = spriteNode.next_sibling("spr"))
-                            {
-                                pugi::xml_attribute name = spriteNode.attribute("name");
-                                pugi::xml_attribute x = spriteNode.attribute("x");
-                                pugi::xml_attribute y = spriteNode.attribute("y");
-                                pugi::xml_attribute w = spriteNode.attribute("w");
-                                pugi::xml_attribute h = spriteNode.attribute("h");
-                                if (name && x && y && w && h)
-                                {
-                                    pNewSpriteSheet->addSprite(name.value(),IVec2(x.as_int(),y.as_int()),USize2(w.as_int(),h.as_int()));
-                                }
-                            }
+                            parseDir(dirNode,pNewSpriteSheet,dirNode.attribute("name").value());
                         }
                     }
                     m_bank.add(filename,pNewSpriteSheet);
