@@ -108,7 +108,7 @@ const CE::SpriteSheet* CE::SpriteSheetLoader::loadFromFile(const std::string& fi
             }
             else
             {
-                NEError << "Invalid SpriteSheet file: img/spr node not found\n";
+                NEError << "Invalid SpriteSheet file: img/definitions node not found\n";
             }
         }
         else

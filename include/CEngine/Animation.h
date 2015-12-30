@@ -1,5 +1,5 @@
-#ifndef __SPRITESHEETLOADER_H__
-#define __SPRITESHEETLOADER_H__
+#ifndef __ANIMATION_H__
+#define __ANIMATION_H__
 
 #ifndef DOXYGEN_IGNORE_TAG
 /**
@@ -25,25 +25,30 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include <string>
+#include <vector>
 
-#include "NEngine/Bank.h"
-
-#include "CEngine/SpriteSheet.h"
-
-namespace NE { class ImageLoader; }
+namespace NE { class Sprite; }
 
 namespace CE
 {
-    class SpriteSheetLoader
+    class Animation
     {
+        typedef std::pair<NE::Sprite, unsigned int> TimedSprite;
+
     private:
-        NE::Bank<const SpriteSheet> m_bank;
+        std::vector<TimedSprite> sprites;
 
+        // Disallow the copy
+        Animation(const Animation& as);
+        void operator= (const Animation& as);
     public:
-        SpriteSheetLoader() {}
+        Animation() {}
+        ~Animation();
 
-        const CE::SpriteSheet* loadFromFile(const std::string& filename, NE::ImageLoader* pIL);
+        void addSprite(const NE::Sprite& pSprite, unsigned int timeToDisplay);
+
+        unsigned int nbSprites()const;
+        const TimedSprite& getSprite(std::size_t index)const;
     };
 }
 

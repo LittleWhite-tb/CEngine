@@ -1,6 +1,3 @@
-#ifndef __SPRITESHEETLOADER_H__
-#define __SPRITESHEETLOADER_H__
-
 #ifndef DOXYGEN_IGNORE_TAG
 /**
 CEngine gives tools to easily build 2D games
@@ -25,26 +22,26 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
-#include <string>
+#include "CEngine/Animation.h"
 
-#include "NEngine/Bank.h"
+#include "NEngine/Sprite.h"
 
-#include "CEngine/SpriteSheet.h"
-
-namespace NE { class ImageLoader; }
-
-namespace CE
+CE::Animation::~Animation(void)
 {
-    class SpriteSheetLoader
-    {
-    private:
-        NE::Bank<const SpriteSheet> m_bank;
-
-    public:
-        SpriteSheetLoader() {}
-
-        const CE::SpriteSheet* loadFromFile(const std::string& filename, NE::ImageLoader* pIL);
-    };
+    NEDebug << "Animation deleted\n";
 }
 
-#endif
+void CE::Animation::addSprite(const NE::Sprite& pSprite, unsigned int timeToDisplay)
+{
+    sprites.push_back(TimedSprite(pSprite,timeToDisplay));
+}
+
+unsigned int CE::Animation::nbSprites()const
+{
+     return sprites.size();
+}
+
+const CE::Animation::TimedSprite& CE::Animation::getSprite(std::size_t index)const
+{
+    return sprites[index];
+}

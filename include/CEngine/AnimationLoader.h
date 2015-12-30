@@ -1,5 +1,5 @@
-#ifndef __SPRITESHEETLOADER_H__
-#define __SPRITESHEETLOADER_H__
+#ifndef __ANIMATIONLOADER_H__
+#define __ANIMATIONLOADER_H__
 
 #ifndef DOXYGEN_IGNORE_TAG
 /**
@@ -27,23 +27,26 @@ e-mail: lw.demoscene@gmail.com
 
 #include <string>
 
-#include "NEngine/Bank.h"
+#include <NEngine/Bank.h>
 
-#include "CEngine/SpriteSheet.h"
+#include "CEngine/Animation.h"
 
 namespace NE { class ImageLoader; }
 
 namespace CE
 {
-    class SpriteSheetLoader
+    class SpriteSheetLoader;
+
+    class AnimationLoader
     {
     private:
-        NE::Bank<const SpriteSheet> m_bank;
+        NE::Bank<const Animation> m_bank;
 
     public:
-        SpriteSheetLoader() {}
+        AnimationLoader() {}
 
-        const CE::SpriteSheet* loadFromFile(const std::string& filename, NE::ImageLoader* pIL);
+        void loadFromFile(const std::string& filename, CE::SpriteSheetLoader* pSSL, NE::ImageLoader* pIL);
+        const Animation* getAnimation(const std::string& name)const;
     };
 }
 

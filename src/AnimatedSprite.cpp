@@ -32,6 +32,8 @@ e-mail: lw.demoscene@gmail.com
 #include "NEngine/Types/Colour.h"
 #include "NEngine/Types/Rect.h"
 
+#include "CEngine/Animation.h"
+
 CE::AnimatedSprite::~AnimatedSprite(void)
 {
     NEDebug << "AnimatedSprite deleted\n";
@@ -41,11 +43,11 @@ void CE::AnimatedSprite::update(const unsigned int time)
 {
     // LDebug << "AnimatedSprite :: update (" << time << ")";
 
-    if ( time - lastUpdate > sprites[animationCounter].second )
+    if ( time - lastUpdate > pAnimation->getSprite(animationCounter).second )
     {
         animationCounter++;
 
-        if ( animationCounter >= nbSprites() )
+        if ( animationCounter >= pAnimation->nbSprites() )
         {
             animationCounter=0;
         }
@@ -54,25 +56,22 @@ void CE::AnimatedSprite::update(const unsigned int time)
     }
 }
 
-void CE::AnimatedSprite::addSprite(const NE::Sprite& pSprite, unsigned int timeToDisplay)
-{
-    sprites.push_back(TimedSprite(pSprite,timeToDisplay));
-}
+
 
 bool CE::AnimatedSprite::draw(const NE::Renderer& r, const IVec2& position, const unsigned int time)
 {
-    if (sprites.empty() )
+    if (pAnimation->nbSprites() == 0 )
         return true;
 
     this->update(time);
-    return sprites[animationCounter].first.draw(r,position);
+    return pAnimation->getSprite(animationCounter).first.draw(r,position);
 }
 
 bool CE::AnimatedSprite::draw(const NE::Renderer& r, const IVec2& position, const Colour& mask, const unsigned int time)
 {
-    if (sprites.empty() )
+    if (pAnimation->nbSprites() == 0 )
         return true;
 
     this->update(time);
-    return sprites[animationCounter].first.draw(r,position,mask);
+    return pAnimation->getSprite(animationCounter).first.draw(r,position,mask);
 }

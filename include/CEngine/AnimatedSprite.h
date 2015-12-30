@@ -33,36 +33,27 @@ e-mail: lw.demoscene@gmail.com
 #include "NEngine/Types/Rect.h"
 
 namespace NE { class Renderer; }
-namespace NE { class Sprite; }
 
 struct Colour;
 
 namespace CE
 {
+    class Animation;
+
     class AnimatedSprite
     {
-        typedef std::pair<NE::Sprite, unsigned int> TimedSprite;
-
     private:        
-        std::vector<TimedSprite> sprites;
+        const Animation* pAnimation;
 
         unsigned int animationCounter;          /*!< number of the current animation */
         unsigned int lastUpdate;                /*!< last time that the animated sprite has been updated */
 
-        // Disallow the copy
-        AnimatedSprite(const AnimatedSprite& as);
-        void operator= (const AnimatedSprite& as);
-
         void update(const unsigned int time);
 
     public:
-        AnimatedSprite()
-            :animationCounter(0),lastUpdate(0) {}
+        AnimatedSprite(const Animation* pAnimation)
+            :pAnimation(pAnimation),animationCounter(0),lastUpdate(0) {}
         ~AnimatedSprite(void);
-
-        void addSprite(const NE::Sprite& pSprite, unsigned int timeToDisplay);
-
-        unsigned int nbSprites()const { return sprites.size(); }
 
         bool draw(const NE::Renderer& r, const IVec2& position, const unsigned int time=0);
         bool draw(const NE::Renderer& r, const IVec2& position, const Colour& mask, const unsigned int time=0);
@@ -88,12 +79,6 @@ namespace CE
  */
 
 /*! \fn CE::AnimatedSprite::~AnimatedSprite(void)
- */
-
-/*! \fn void CE::AnimatedSprite::addSprite(const NE::Sprite& pSprite, unsigned int timeToDisplay)
- * Add a sprite to the animation
- * \param pSprite the sprite to add
- * \param timeToDisplay the time this sprite should stay on screen
  */
 
 /*! \fn bool CE::AnimatedSprite::draw(const NE::Renderer& r, const IVec2& position, const unsigned int time=0)

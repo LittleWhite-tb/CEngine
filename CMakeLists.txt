@@ -16,6 +16,8 @@ else()
 endif ()
 
 set(sources
+        src/AnimationLoader.cpp
+        src/Animation.cpp
 	src/AnimatedSprite.cpp
 	src/Font.cpp
         src/SpriteSheet.cpp
