@@ -27,6 +27,8 @@ e-mail: lw.demoscene@gmail.com
 
 #include <vector>
 
+#include "NEngine/Bank.h"
+
 namespace NE { class Sprite; }
 
 namespace CE
@@ -41,14 +43,17 @@ namespace CE
         // Disallow the copy
         Animation(const Animation& as);
         void operator= (const Animation& as);
+        ~Animation();
+
     public:
         Animation() {}
-        ~Animation();
 
         void addSprite(const NE::Sprite& pSprite, unsigned int timeToDisplay);
 
         unsigned int nbSprites()const;
         const TimedSprite& getSprite(std::size_t index)const;
+
+        friend class NE::Bank<const Animation>;
     };
 }
 

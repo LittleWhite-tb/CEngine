@@ -25,6 +25,7 @@ e-mail: lw.demoscene@gmail.com
 **/
 #endif
 
+#include "NEngine/Bank.h"
 #include "NEngine/Sprite.h"
 
 namespace NE { class Image; }
@@ -38,6 +39,12 @@ namespace CE
         std::map<std::string, NE::Sprite> sprites;
 
         bool exists(const std::string& spriteName)const;
+
+        // Disallow the copy
+        SpriteSheet(const SpriteSheet& as);
+        void operator= (const SpriteSheet& as);
+        ~SpriteSheet() {}
+
     public:
         SpriteSheet(const NE::Image* pImage)
             :pImage(pImage) {}
@@ -49,6 +56,8 @@ namespace CE
 #ifndef NDEBUG
         void listSprites()const;
 #endif
+
+        friend class NE::Bank<CE::SpriteSheet>;
     };
 }
 

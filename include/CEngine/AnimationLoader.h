@@ -38,10 +38,12 @@ namespace CE
 {
     class SpriteSheetLoader;
 
+    typedef NE::Bank<const Animation> AnimationBank;
+
     class AnimationLoader
     {
     private:
-        NE::Bank<const Animation> m_bank;
+        AnimationBank m_bank;
 
     public:
         AnimationLoader() {}
