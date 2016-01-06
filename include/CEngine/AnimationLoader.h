@@ -29,6 +29,7 @@ e-mail: lw.demoscene@gmail.com
 
 #include <NEngine/Bank.h>
 
+#include "CEngine/SpriteSheetLoader.h"
 #include "CEngine/Animation.h"
 
 namespace NE { class ImageLoader; }
@@ -45,7 +46,7 @@ namespace CE
     public:
         AnimationLoader() {}
 
-        void loadFromFile(const std::string& filename, CE::SpriteSheetLoader* pSSL, NE::ImageLoader* pIL);
+        void loadFromFile(const std::string& filename, CE::SpriteSheetLoader* pSSL, CE::SpriteSheetBank* bank, NE::ImageLoader* pIL, NE::ImageBank* imageBank);
         const Animation* getAnimation(const std::string& name)const;
     };
 }

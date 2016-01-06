@@ -37,7 +37,7 @@ e-mail: lw.demoscene@gmail.com
 
 #include "pugixml.hpp"
 
-void CE::AnimationLoader::loadFromFile(const std::string& filename, CE::SpriteSheetLoader* pSSL, NE::ImageLoader* pIL)
+void CE::AnimationLoader::loadFromFile(const std::string& filename, CE::SpriteSheetLoader* pSSL, CE::SpriteSheetBank* pBank, NE::ImageLoader* pIL, NE::ImageBank* pImageBank)
 {
     assert(pSSL);
     assert(pIL);
@@ -48,7 +48,9 @@ void CE::AnimationLoader::loadFromFile(const std::string& filename, CE::SpriteSh
         pugi::xml_node animationsNode = doc.child("animations");
         if (animationsNode && animationsNode.attribute("spriteSheet"))
         {
-            const CE::SpriteSheet* pSpriteSheet = pSSL->loadFromFile(CE::Utils::dirname(filename) + animationsNode.attribute("spriteSheet").value(),pIL);
+            const CE::SpriteSheet* pSpriteSheet = pSSL->loadFromFile(CE::Utils::dirname(filename) + animationsNode.attribute("spriteSheet").value(),
+                                                                     pBank,
+                                                                     pIL,pImageBank);
             if (pSpriteSheet)
             {
                 for (pugi::xml_node animNode = animationsNode.child("anim") ; animNode ; animNode = animNode.next_sibling("anim"))

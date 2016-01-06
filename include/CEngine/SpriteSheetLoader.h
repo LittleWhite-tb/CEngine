@@ -28,22 +28,18 @@ e-mail: lw.demoscene@gmail.com
 #include <string>
 
 #include "NEngine/Bank.h"
+#include "NEngine/ImageLoader.h"
 
 #include "CEngine/SpriteSheet.h"
 
-namespace NE { class ImageLoader; }
-
 namespace CE
 {
+    typedef NE::Bank<CE::SpriteSheet> SpriteSheetBank;
+
     class SpriteSheetLoader
     {
-    private:
-        NE::Bank<const SpriteSheet> m_bank;
-
     public:
-        SpriteSheetLoader() {}
-
-        const CE::SpriteSheet* loadFromFile(const std::string& filename, NE::ImageLoader* pIL);
+        static const CE::SpriteSheet* loadFromFile(const std::string& filename, SpriteSheetBank* pSSBank, NE::ImageLoader* pIL, NE::ImageBank* pImageBank);
     };
 }
 

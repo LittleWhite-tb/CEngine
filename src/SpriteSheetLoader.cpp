@@ -76,9 +76,9 @@ void parseDir(const pugi::xml_node& dirNode, CE::SpriteSheet* pSpriteSheet, cons
     }
 }
 
-const CE::SpriteSheet* CE::SpriteSheetLoader::loadFromFile(const std::string& filename, NE::ImageLoader* pIL)
+const CE::SpriteSheet* CE::SpriteSheetLoader::loadFromFile(const std::string& filename, CE::SpriteSheetBank* pSSBank, NE::ImageLoader* pIL, NE::ImageBank* pImageBank)
 {
-    const CE::SpriteSheet* pSpriteSheet = m_bank.get(filename);
+    const CE::SpriteSheet* pSpriteSheet = pSSBank->get(filename);
     if ( pSpriteSheet == NULL ) // It was not in the bank
     {
         pugi::xml_document doc;
@@ -88,7 +88,7 @@ const CE::SpriteSheet* CE::SpriteSheetLoader::loadFromFile(const std::string& fi
             if (imgNode && imgNode.attribute("name") &&
                 imgNode.child("definitions"))
             {
-                const NE::Image* pImage = pIL->loadImageFromFile(CE::Utils::dirname(filename) + imgNode.attribute("name").value());
+                const NE::Image* pImage = pIL->loadImageFromFile(CE::Utils::dirname(filename) + imgNode.attribute("name").value(), pImageBank);
                 if (pImage)
                 {
                     CE::SpriteSheet* pNewSpriteSheet = new CE::SpriteSheet(pImage);
@@ -102,7 +102,7 @@ const CE::SpriteSheet* CE::SpriteSheetLoader::loadFromFile(const std::string& fi
                             parseDir(dirNode,pNewSpriteSheet,dirNode.attribute("name").value());
                         }
                     }
-                    m_bank.add(filename,pNewSpriteSheet);
+                    pSSBank->add(filename,pNewSpriteSheet);
                     return pNewSpriteSheet;
                 }
             }
